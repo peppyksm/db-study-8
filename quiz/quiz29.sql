@@ -1,0 +1,47 @@
+--1번
+DELETE는 dml, TRUNCATE는 ddl. 둘 다 테이블 내부 데이터를 삭제한다는 점은 동일하나
+TRUNCATE는 그 자체로 테이블 내부를 전체 초기화하고 DELETE는 특정 조건에 맞는 데이터만 삭제하거나
+조건 입력을 안할 시 전체를 삭제한다. DELETE는 dml이므로 commit이 필요하고 rollback이 가능하다.
+
+
+--2번
+CREATE TABLE T_MEMBER_POINT
+(
+    ID NUMBER(6),
+    순번 NUMBER(6),
+    멤버ID VARCHAR2(24) not null,
+    점수 NUMBER(3),
+    채점일시 DATE DEFAULT sysdate,
+    CONSTRAINT TMP_PK PRIMARY KEY (id, 순번)
+);
+
+
+--3번
+CREATE SEQUENCE T_MEMBER_POINT_PK_SEQ
+INCREMENT BY 1
+START WITH 1
+MINVALUE 1
+MAXVALUE 999999
+NOCYCLE;
+
+
+--4번
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'A')+1 , 'A', 30);
+
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'B')+1 , 'B', 40);
+
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'C')+1 , 'C', 40);
+
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'A')+1 , 'A', 50);
+
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'B')+1 , 'B', 60);
+
+INSERT INTO T_MEMBER_POINT(ID, 순번, 멤버ID, 점수)
+VALUES (T_MEMBER_POINT_PK_SEQ.nextval, (SELECT COUNT(*) FROM T_MEMBER_POINT WHERE 멤버ID = 'A')+1 , 'A', 70);
+
+select * from T_MEMBER_POINT;
